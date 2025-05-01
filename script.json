@@ -1,21 +1,28 @@
-const games = [
-  { name: "Chat qui saute", id: "10128407" },
-  { name: "Maze Game", id: "19298766" },
-  { name: "Pong", id: "10015059" }
+// Liste des fichiers SB3 connus dans le dossier (automatique statique)
+const sb3Files = [
+  "Particle Accelerator.sb3",
+  "jeu2.sb3",
+  "autre.sb3"
 ];
+
+// Générer une liste de jeux avec noms lisibles
+const games = sb3Files.map(file => {
+  return {
+    name: file.replace(".sb3", "").replace(/_/g, " "),
+    url: `https://votre-domaine.netlify.app/${file}`
+  };
+});
 
 const selector = document.getElementById("gameSelector");
 const frame = document.getElementById("gameFrame");
 
-function loadGame(id) {
-  const embedURL = `https://turbowarp.org/${id}/embed?fps=60&turbo&full-screen`;
-  frame.src = embedURL;
+function loadGame(url) {
+  frame.src = `https://turbowarp.org/editor?project=${encodeURIComponent(url)}&fullscreen`;
 }
 
-// Ajouter les options
 games.forEach(game => {
   const option = document.createElement("option");
-  option.value = game.id;
+  option.value = game.url;
   option.textContent = game.name;
   selector.appendChild(option);
 });
@@ -24,5 +31,4 @@ selector.addEventListener("change", e => {
   loadGame(e.target.value);
 });
 
-// Charger le premier jeu par défaut
-loadGame(games[0].id);
+loadGame(games[0].url);
