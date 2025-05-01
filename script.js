@@ -12,7 +12,11 @@ fetch("games.json")
     });
 
     function loadGame(id) {
-      frame.src = `https://turbowarp.org/${id}/embed?autoplay&fullscreen`;
+      frame.classList.remove("slide-up");
+      setTimeout(() => {
+        frame.src = `https://turbowarp.org/${id}/embed?autoplay&fullscreen`;
+        frame.classList.add("slide-up");
+      }, 200);
     }
 
     selector.addEventListener("change", e => loadGame(e.target.value));
