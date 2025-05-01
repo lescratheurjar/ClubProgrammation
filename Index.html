@@ -10,14 +10,23 @@
 </head>
 <body>
   <div class="container">
-    <header class="fade-in">
-      <h1><i class="ri-gamepad-line"></i> Selectionnez un jeu</h1>
-      <select id="gameSelector"></select>
-    </header>
 
-    <main class="slide-up">
-      <iframe id="gameFrame" allowfullscreen></iframe>
-    </main>
+    <!-- Menu Principal -->
+    <section id="menu" class="fade-in">
+      <h1><i class="ri-gamepad-line"></i> Selectionnez un jeu</h1>
+      <div id="gameList"></div>
+    </section>
+
+    <!-- Vue Jeu -->
+    <section id="gameView" class="hidden">
+      <header>
+        <button id="backBtn"><i class="ri-arrow-left-line"></i> Retour</button>
+        <select id="gameSelector"></select>
+      </header>
+      <main>
+        <iframe id="gameFrame" allowfullscreen></iframe>
+      </main>
+    </section>
   </div>
 
   <script src="script.js"></script>
