@@ -7,7 +7,12 @@ const games = [
 const selector = document.getElementById("gameSelector");
 const frame = document.getElementById("gameFrame");
 
-// Remplir le menu déroulant
+function loadGame(id) {
+  const embedURL = `https://turbowarp.org/${id}/embed?fps=60&turbo&full-screen`;
+  frame.src = embedURL;
+}
+
+// Ajouter les options
 games.forEach(game => {
   const option = document.createElement("option");
   option.value = game.id;
@@ -15,14 +20,9 @@ games.forEach(game => {
   selector.appendChild(option);
 });
 
-// Charger le premier jeu
-function loadGame(id) {
-  frame.src = `https://turbowarp.org/${id}/embed?fps=60&turbo`;
-}
-
 selector.addEventListener("change", e => {
   loadGame(e.target.value);
 });
 
-// Initialisation
+// Charger le premier jeu par défaut
 loadGame(games[0].id);
