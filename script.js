@@ -12,7 +12,6 @@ fetch("games.json")
   .then(data => {
     games = data;
 
-    // Remplir le menu principal
     games.forEach(game => {
       const card = document.createElement("div");
       card.className = "game-card";
@@ -21,7 +20,6 @@ fetch("games.json")
       gameList.appendChild(card);
     });
 
-    // Remplir le select en haut
     games.forEach(game => {
       const option = document.createElement("option");
       option.value = game.id;
@@ -35,6 +33,7 @@ fetch("games.json")
   });
 
 function openGame(id) {
+  document.body.classList.add("fullscreen-mode");
   menu.classList.add("hidden");
   gameView.classList.remove("hidden");
   selector.value = id;
@@ -46,6 +45,7 @@ function loadGame(id) {
 }
 
 backBtn.addEventListener("click", () => {
+  document.body.classList.remove("fullscreen-mode");
   gameView.classList.add("hidden");
   menu.classList.remove("hidden");
   frame.src = "";
