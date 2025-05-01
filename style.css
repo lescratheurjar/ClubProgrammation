@@ -1,25 +1,130 @@
-/* Fullscreen mode: jeu prend toute la fenêtre */
-.fullscreen-mode iframe {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 9999;
+/* Reset + Body */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: radial-gradient(circle at top left, #222 0%, #111 100%);
+  color: #f0f0f0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+/* Container */
+.container {
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+/* Sections */
+section {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.hidden {
+  display: none;
+}
+
+/* Menu */
+#menu h1 {
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+#gameList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+}
+.game-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.game-card:hover {
+  background: rgba(255,255,255,0.1);
+  transform: translateY(-5px);
+}
+
+/* Game View */
+header {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+header button {
+  padding: 0.5rem 1rem;
+  background: #333;
   border: none;
+  color: white;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+header button:hover {
+  background: #444;
+}
+select {
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  background: #333;
+  color: white;
+  border: none;
+  font-size: 1rem;
 }
 
-.fullscreen-mode body > *:not(#gameView) {
-  display: none !important;
+/* Iframe */
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+}
+iframe {
+  width: 100%;
+  max-width: 960px;
+  height: 540px;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.6);
 }
 
-.fullscreen-mode #gameView {
-  all: unset;
+/* Footer */
+footer {
+  text-align: center;
+  padding: 1rem;
+  background: rgba(255,255,255,0.03);
+  font-size: 0.9rem;
+}
+footer a {
+  color: #5ac8fa;
+  text-decoration: none;
+}
+footer a:hover {
+  text-decoration: underline;
 }
 
-/* Supprime les styles inutiles pour le plein écran */
-.fullscreen-mode header,
-.fullscreen-mode select,
-.fullscreen-mode button {
-  display: none !important;
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+.fade-in {
+  animation: fadeIn 1.2s ease-out;
 }
