@@ -1,3 +1,5 @@
 [
-  "ParticleAccelerator.sb3"
+  { "name": "Maze Game", "id": "19298766" },
+  { "name": "Pong", "id": "10015059" },
+  { "name": "Pac-Man", "id": "274114883" }
 ]
