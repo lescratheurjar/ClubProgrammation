@@ -98,7 +98,7 @@ main {
 }
 iframe {
   width: 100%;
-  max-width: 1920px;
+  max-width: 800px;
   height: 1600px;
   border: none;
   border-radius: 12px;
