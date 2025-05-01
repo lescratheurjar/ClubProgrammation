@@ -1,52 +1,85 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
+/* Reset + Body */
+* { margin: 0; padding: 0; box-sizing: border-box; }
 body {
   font-family: 'Inter', sans-serif;
   background: radial-gradient(circle at top left, #222 0%, #111 100%);
   color: #f0f0f0;
   min-height: 100vh;
   display: flex;
-  align-items: center;
   justify-content: center;
   padding: 2rem;
 }
 
+/* Container */
 .container {
-  max-width: 1000px;
+  max-width: 1200px;
   width: 100%;
+  display: flex;
+  flex-direction: column;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 16px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.4);
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   overflow: hidden;
+}
+
+/* Sections */
+section {
+  padding: 2rem;
   display: flex;
   flex-direction: column;
-  animation: fadeIn 1s ease-out;
+  align-items: center;
+}
+.hidden {
+  display: none;
 }
 
+/* Menu */
+#menu h1 {
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+#gameList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+}
+.game-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.game-card:hover {
+  background: rgba(255,255,255,0.1);
+  transform: translateY(-5px);
+}
+
+/* Game View */
 header {
   background: rgba(255, 255, 255, 0.05);
-  padding: 1.5rem 2rem;
+  padding: 1rem 2rem;
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
-
-header h1 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+header button {
+  padding: 0.5rem 1rem;
+  background: #333;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
 }
-
+header button:hover {
+  background: #444;
+}
 select {
   padding: 0.6rem 1rem;
   border-radius: 8px;
@@ -54,38 +87,31 @@ select {
   color: white;
   border: none;
   font-size: 1rem;
-  transition: all 0.3s ease;
-}
-select:hover {
-  background: #444;
-  cursor: pointer;
 }
 
+/* Iframe */
 main {
-  padding: 1rem;
+  flex: 1;
   display: flex;
   justify-content: center;
-  align-items: center;
+  padding: 1rem;
 }
-
 iframe {
   width: 100%;
+  max-width: 960px;
   height: 540px;
   border: none;
   border-radius: 12px;
-  transition: all 0.5s ease;
   box-shadow: 0 0 20px rgba(0,0,0,0.6);
 }
 
+/* Footer */
 footer {
   text-align: center;
   padding: 1rem;
+  background: rgba(255,255,255,0.03);
   font-size: 0.9rem;
-  background: rgba(255, 255, 255, 0.03);
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  color: #aaa;
 }
-
 footer a {
   color: #5ac8fa;
   text-decoration: none;
@@ -101,12 +127,4 @@ footer a:hover {
 }
 .fade-in {
   animation: fadeIn 1.2s ease-out;
-}
-
-@keyframes slideUp {
-  from { transform: translateY(30px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-.slide-up {
-  animation: slideUp 1s ease-out;
 }
