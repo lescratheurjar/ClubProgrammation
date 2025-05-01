@@ -6,7 +6,7 @@ fetch("games.json")
   .then(files => {
     const games = files.map(file => ({
       name: file.replace(".sb3", "").replace(/_/g, " "),
-      url: `${file}`
+      url: `${location.origin}/${file}`
     }));
 
     games.forEach(game => {
@@ -16,9 +16,9 @@ fetch("games.json")
       selector.appendChild(option);
     });
 
-    function loadGame(url) {
-      const fullUrl = `${location.origin}/${url}`;
-      frame.src = `https://turbowarp.org/editor?project=${encodeURIComponent(fullUrl)}&fullscreen`;
+    function loadGame(projectUrl) {
+      const encodedUrl = encodeURIComponent(projectUrl);
+      frame.src = `https://turbowarp.org/embed.html?project_url=${encodedUrl}`;
     }
 
     selector.addEventListener("change", e => {
