@@ -98,8 +98,8 @@ main {
 }
 iframe {
   width: 100%;
-  max-width: 800px;
-  height: 1600px;
+  max-width: 80px;
+  height: 160px;
   border: none;
   border-radius: 12px;
   box-shadow: 0 0 20px rgba(0,0,0,0.6);
