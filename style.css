@@ -21,6 +21,7 @@ body {
   box-shadow: 0 8px 32px rgba(0,0,0,0.4);
   backdrop-filter: blur(10px);
   overflow: hidden;
+  flex: 1;
 }
 
 /* Sections */
@@ -60,6 +61,13 @@ section {
 }
 
 /* Game View */
+#gameView {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0;
+}
 header {
   background: rgba(255, 255, 255, 0.05);
   padding: 1rem 2rem;
@@ -94,12 +102,12 @@ main {
   flex: 1;
   display: flex;
   justify-content: center;
-  padding: 1rem;
+  align-items: center;
+  padding: 0;
 }
 iframe {
   width: 100%;
-  max-width: 800px;
-  height: 1600px;
+  height: 90vh;
   border: none;
   border-radius: 12px;
   box-shadow: 0 0 20px rgba(0,0,0,0.6);
