@@ -1,5 +1,20 @@
 [
-  { "name": "money king test", "id": "1098721850", "type": "scratch" },
-  { "name": "Try-Angle", "id": "979987179", "type": "scratch" },
-  { "name": "Evolution Fortress", "id": "816337755", "type": "scratch" },
+  { "name": "money king test", "id": "1098721850", "type": "scratch", "description": "Boss test play it or whatever,this is part of a bigger project" },
+  { "name": "Try-Angle", "id": "979987179", "type": "scratch", "description": "Click to move and press space to fire" },
+  { "name": "Evolution Fortress", "id": "816337755", "type": "scratch", "description": "How to play:
+-watch the cinematic (story).
+-after, click the 'PLAY' button.
+- click 1 or 2 to change weapon:
+- 1 for axe, it can make resources.
+- 2 for sword, it can simply kill zombies.
+-Your character receive no damage, but if the 'energy core' is destroyed, you lose.
+-Click your mouse to use your weapons.
+-To gain resources, click the rock or the tree with your axe.
+-Touch the 'SHOP' button to see the list of constructible turrets.
+-You have to get enough ressource to build turrets.
+-You have to survive 50 wave of zombie invasion to win.
+-Every turret except the extractor and the wall have weapons to kill zombies.
+-When you buy a turret, click R button to rotate it.
+-----------------------------------------------------------------
+Good luck!" }
 ]
