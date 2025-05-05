@@ -109,13 +109,11 @@
 </head>
 <body>
   <div class="container">
-    <!-- Menu Principal -->
     <section id="menu" class="fade-in">
       <h1><i class="ri-gamepad-line"></i> Choisir un jeu</h1>
       <div id="gameList"></div>
     </section>
 
-    <!-- Vue Jeu -->
     <section id="gameView" class="hidden">
       <header>
         <button id="backBtn"><i class="ri-arrow-left-line"></i> Retour</button>
@@ -134,33 +132,33 @@
     const selector = document.getElementById("gameSelector");
     const frame = document.getElementById("gameFrame");
     const backBtn = document.getElementById("backBtn");
-
     let games = [];
 
     fetch("games.json")
-      .then(res => res.json())
+      .then(response => response.json())
       .then(data => {
         games = data;
-
-        games.forEach(game => {
-          const card = document.createElement("div");
-          card.className = "game-card";
-          card.textContent = game.name;
-          card.onclick = () => openGame(game.id);
-          gameList.appendChild(card);
-        });
-
-        games.forEach(game => {
-          const option = document.createElement("option");
-          option.value = game.id;
-          option.textContent = game.name;
-          selector.appendChild(option);
-        });
-
-        selector.addEventListener("change", (e) => {
-          loadGame(e.target.value);
-        });
+        renderGames();
       });
+
+    function renderGames() {
+      games.forEach(game => {
+        const card = document.createElement("div");
+        card.className = "game-card";
+        card.textContent = game.name;
+        card.onclick = () => openGame(game.id);
+        gameList.appendChild(card);
+
+        const option = document.createElement("option");
+        option.value = game.id;
+        option.textContent = game.name;
+        selector.appendChild(option);
+      });
+    }
+
+    selector.addEventListener("change", (e) => {
+      loadGame(e.target.value);
+    });
 
     function openGame(id) {
       menu.classList.add("hidden");
