@@ -1,5 +1,10 @@
 [
-  { "name": "money king test", "id": "1098721850" },
-  { "name": "Try-Angle", "id": "979987179" },
-  { "name": "Evolution Fortress", "id": "816337755" }
+  { "name": "money king test", "id": "1098721850", "type": "scratch" },
+  { "name": "Try-Angle", "id": "979987179", "type": "scratch" },
+  { "name": "Evolution Fortress", "id": "816337755", "type": "scratch" },
+  {
+    "name": "Jeu Unity hébergé sur Netlify",
+    "id": "/Games/index.html",
+    "type": "unity"
+  }
 ]
