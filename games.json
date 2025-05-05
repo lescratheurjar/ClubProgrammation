@@ -2,9 +2,4 @@
   { "name": "money king test", "id": "1098721850", "type": "scratch" },
   { "name": "Try-Angle", "id": "979987179", "type": "scratch" },
   { "name": "Evolution Fortress", "id": "816337755", "type": "scratch" },
-  {
-    "name": "Test",
-    "id": "/game.html",
-    "type": "unity"
-  }
 ]
