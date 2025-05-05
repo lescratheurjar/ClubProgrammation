@@ -3,11 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Club Scratch</title>
+  <title>Club Jeux</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet" />
   <style>
-    /* Reset + Body */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Inter', sans-serif;
@@ -18,8 +17,6 @@
       justify-content: center;
       padding: 2rem;
     }
-
-    /* Container */
     .container {
       max-width: 1200px;
       width: 100%;
@@ -31,19 +28,13 @@
       backdrop-filter: blur(10px);
       overflow: hidden;
     }
-
-    /* Sections */
     section {
       padding: 2rem;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
-    .hidden {
-      display: none;
-    }
-
-    /* Menu */
+    .hidden { display: none; }
     #menu h1 {
       margin-bottom: 2rem;
       font-size: 2rem;
@@ -67,8 +58,6 @@
       background: rgba(255,255,255,0.1);
       transform: translateY(-5px);
     }
-
-    /* Game View */
     header {
       background: rgba(255, 255, 255, 0.05);
       padding: 1rem 2rem;
@@ -86,9 +75,7 @@
       cursor: pointer;
       transition: background 0.3s;
     }
-    header button:hover {
-      background: #444;
-    }
+    header button:hover { background: #444; }
     select {
       padding: 0.6rem 1rem;
       border-radius: 8px;
@@ -97,8 +84,6 @@
       border: none;
       font-size: 1rem;
     }
-
-    /* Iframe */
     main {
       flex: 1;
       display: flex;
@@ -106,30 +91,13 @@
       padding: 1rem;
     }
     iframe {
-      width: 150%;
-      max-width: 2980px;
-      height: 240px;
+      width: 100%;
+      max-width: 1280px;
+      height: 720px;
       border: none;
       border-radius: 12px;
       box-shadow: 0 0 20px rgba(0,0,0,0.6);
     }
-
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 1rem;
-      background: rgba(255,255,255,0.03);
-      font-size: 0.9rem;
-    }
-    footer a {
-      color: #5ac8fa;
-      text-decoration: none;
-    }
-    footer a:hover {
-      text-decoration: underline;
-    }
-
-    /* Animations */
     @keyframes fadeIn {
       from { opacity: 0; transform: scale(0.98); }
       to { opacity: 1; transform: scale(1); }
@@ -141,7 +109,6 @@
 </head>
 <body>
   <div class="container">
-
     <!-- Menu Principal -->
     <section id="menu" class="fade-in">
       <h1><i class="ri-gamepad-line"></i> Choisir un jeu</h1>
@@ -175,7 +142,6 @@
       .then(data => {
         games = data;
 
-        // Remplir le menu principal
         games.forEach(game => {
           const card = document.createElement("div");
           card.className = "game-card";
@@ -184,7 +150,6 @@
           gameList.appendChild(card);
         });
 
-        // Remplir le select en haut
         games.forEach(game => {
           const option = document.createElement("option");
           option.value = game.id;
@@ -205,7 +170,13 @@
     }
 
     function loadGame(id) {
-      frame.src = `https://turbowarp.org/${id}/embed?autoplay&fullscreen`;
+      const game = games.find(g => g.id === id || g.id.toString() === id);
+      if (!game) return;
+      if (game.type === "scratch") {
+        frame.src = `https://turbowarp.org/${game.id}/embed?autoplay&fullscreen`;
+      } else if (game.type === "unity") {
+        frame.src = game.id;
+      }
     }
 
     backBtn.addEventListener("click", () => {
