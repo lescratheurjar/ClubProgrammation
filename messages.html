@@ -56,11 +56,15 @@
 <body>
   <div class="form-container">
     <h1>Envoyer un message</h1>
-    <form id="messageForm">
-      <input type="text" id="username" placeholder="Votre nom" required>
-      <textarea id="message" placeholder="Votre message" rows="5" required></textarea>
+    
+    <!-- Formulaire Netlify -->
+    <form id="messageForm" name="messages" method="POST" data-netlify="true">
+      <input type="text" name="username" placeholder="Votre nom" required>
+      <textarea name="message" placeholder="Votre message" rows="5" required></textarea>
       <button type="submit">Envoyer</button>
     </form>
+
+    <!-- Message de confirmation -->
     <p class="success" id="successMsg"></p>
   </div>
 
@@ -68,51 +72,25 @@
     const form = document.getElementById('messageForm');
     const successMsg = document.getElementById('successMsg');
 
-    // Message system functions
-    function saveMessage(sender, message) {
-      const messages = getMessages();
-      const newMessage = {
-        id: Date.now(),
-        sender: sender,
-        content: message,
-        timestamp: new Date().toLocaleString('fr-FR')
-      };
-      messages.push(newMessage);
-      localStorage.setItem('clubMessages', JSON.stringify(messages));
-      return newMessage;
-    }
-
-    function getMessages() {
-      const stored = localStorage.getItem('clubMessages');
-      return stored ? JSON.parse(stored) : [];
-    }
-
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const name = document.getElementById('username').value.trim();
-      const message = document.getElementById('message').value.trim();
+      const formData = new FormData(form);
 
-      if(name && message) {
-        try {
-          saveMessage(name, message);
-          console.log(`Message de ${name} : ${message}`);
-          successMsg.textContent = "Message envoyé avec succès !";
-          successMsg.style.color = "lightgreen";
-          form.reset();
-          
-          // Hide success message after 3 seconds
-          setTimeout(() => {
-            successMsg.textContent = "";
-          }, 3000);
-        } catch (error) {
-          console.error('Erreur lors de l\'envoi du message:', error);
-          successMsg.textContent = "Erreur lors de l'envoi du message.";
-          successMsg.style.color = "lightcoral";
-        }
-      } else {
-        successMsg.textContent = "Veuillez remplir tous les champs.";
-        successMsg.style.color = "orange";
-      }
+      fetch("/", {
+        method: "POST",
+        body: formData
+      })
+      .then(() => {
+        successMsg.textContent = "Message envoyé avec succès !";
+        successMsg.style.color = "lightgreen";
+        form.reset();
+        setTimeout(() => successMsg.textContent = "", 3000);
+      })
+      .catch((error) => {
+        console.error(error);
+        successMsg.textContent = "Erreur lors de l'envoi.";
+        successMsg.style.color = "lightcoral";
+      });
     });
   </script>
 </body>
