@@ -16,6 +16,15 @@
       display: flex;
       justify-content: center;
       padding: 2rem;
+      position: relative;
+    }
+    #particleCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
     }
     .container {
       max-width: 1200px;
@@ -25,7 +34,7 @@
       background: rgba(255, 255, 255, 0.05);
       border-radius: 16px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(2px);
       overflow: hidden;
     }
     section {
@@ -35,15 +44,33 @@
       align-items: center;
     }
     .hidden { display: none; }
+    #menu {
+      position: relative;
+    }
     #menu h1 {
-      margin-bottom: 2rem;
+      margin-bottom: 1rem;
       font-size: 2rem;
     }
+    #contactBtn {
+      position: absolute;
+      top: 0.5rem;
+      right: 1rem;
+      padding: 0.5rem 1rem;
+      background: #333;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    #contactBtn:hover { background: #444; }
     #gameList {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 1.5rem;
       width: 100%;
+      margin-top: 1rem;
     }
     .game-card {
       background: rgba(255,255,255,0.05);
@@ -74,6 +101,7 @@
       font-size: 1rem;
       cursor: pointer;
       transition: background 0.3s;
+      margin-right: 0.5rem;
     }
     header button:hover { background: #444; }
     select {
@@ -98,6 +126,94 @@
       border-radius: 12px;
       box-shadow: 0 0 20px rgba(0,0,0,0.6);
     }
+    form {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 600px;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 150px;
+      padding: 1rem;
+      border-radius: 8px;
+      border: none;
+      margin-bottom: 1rem;
+      background: rgba(255,255,255,0.1);
+      color: #f0f0f0;
+      font-size: 1rem;
+    }
+    .btn-primary {
+      padding: 0.75rem 1.5rem;
+      background: #333;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      align-self: flex-end;
+      transition: background 0.3s;
+    }
+    .btn-primary:hover { background: #444; }
+    input {
+      padding: 0.75rem;
+      border-radius: 8px;
+      border: none;
+      margin-bottom: 1rem;
+      background: rgba(255,255,255,0.1);
+      color: #f0f0f0;
+      font-size: 1rem;
+      width: 100%;
+    }
+    input::placeholder {
+      color: #bbb;
+    }
+    #messageStatus {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: bold;
+    }
+    #messageStatus.success {
+      background: rgba(34, 197, 94, 0.2);
+      color: #22c55e;
+      border: 1px solid #22c55e;
+    }
+    #messageStatus.error {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+      border: 1px solid #ef4444;
+    }
+    .message-item {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .message-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      color: #bbb;
+    }
+    .message-sender {
+      font-weight: bold;
+      color: #22c55e;
+    }
+    .message-content {
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+    .no-messages {
+      text-align: center;
+      color: #888;
+      font-style: italic;
+      padding: 2rem;
+    }
     @keyframes fadeIn {
       from { opacity: 0; transform: scale(0.98); }
       to { opacity: 1; transform: scale(1); }
@@ -108,12 +224,17 @@
   </style>
 </head>
 <body>
+  <canvas id="particleCanvas"></canvas>
   <div class="container">
+
+    <!-- Menu Section -->
     <section id="menu" class="fade-in">
       <h1><i class="ri-gamepad-line"></i> Choisir un jeu</h1>
+      <button id="contactBtn">Envoyer un message</button>
       <div id="gameList"></div>
     </section>
 
+    <!-- Game View Section -->
     <section id="gameView" class="hidden">
       <header>
         <button id="backBtn"><i class="ri-arrow-left-line"></i> Retour</button>
@@ -123,25 +244,71 @@
         <iframe id="gameFrame" allowfullscreen></iframe>
       </main>
     </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="hidden fade-in">
+      <header>
+        <button id="backContact"><i class="ri-arrow-left-line"></i> Retour</button>
+        <button id="viewMessages">Voir les messages</button>
+      </header>
+      <main>
+        <h2>Envoyer un message</h2>
+        <form id="contactForm">
+          <input type="text" id="senderName" placeholder="Votre nom..." required>
+          <textarea id="messageText" placeholder="Votre message..." required></textarea>
+          <button type="submit" class="btn-primary">Envoyer</button>
+        </form>
+        <div id="messageStatus" class="hidden"></div>
+      </main>
+    </section>
+
+    <!-- Messages View Section -->
+    <section id="messagesView" class="hidden fade-in">
+      <header>
+        <button id="backFromMessages"><i class="ri-arrow-left-line"></i> Retour</button>
+        <button id="clearMessages">Effacer tous les messages</button>
+      </header>
+      <main>
+        <h2>Messages reçus</h2>
+        <div id="messagesList"></div>
+      </main>
+    </section>
+
   </div>
 
   <script>
     const menu = document.getElementById("menu");
     const gameView = document.getElementById("gameView");
+    const contactSect = document.getElementById("contact");
+    const messagesView = document.getElementById("messagesView");
     const gameList = document.getElementById("gameList");
     const selector = document.getElementById("gameSelector");
     const frame = document.getElementById("gameFrame");
     const backBtn = document.getElementById("backBtn");
+    const contactBtn = document.getElementById("contactBtn");
+    const backContact = document.getElementById("backContact");
+    const viewMessages = document.getElementById("viewMessages");
+    const backFromMessages = document.getElementById("backFromMessages");
+    const clearMessages = document.getElementById("clearMessages");
+    const contactForm = document.getElementById("contactForm");
+    const messageStatus = document.getElementById("messageStatus");
+    const messagesList = document.getElementById("messagesList");
     let games = [];
 
+    // Load games
     fetch("games.json")
       .then(response => response.json())
       .then(data => {
         games = data;
         renderGames();
-      });
+      })
+      .catch(error => console.error("Erreur lors du chargement des jeux :", error));
 
     function renderGames() {
+      if (games.length === 0) return;
+      gameList.innerHTML = '';
+      selector.innerHTML = '';
+
       games.forEach(game => {
         const card = document.createElement("div");
         card.className = "game-card";
@@ -161,7 +328,7 @@
     });
 
     function openGame(id) {
-      menu.classList.add("hidden");
+      hideAllSections();
       gameView.classList.remove("hidden");
       selector.value = id;
       loadGame(id);
@@ -178,10 +345,186 @@
     }
 
     backBtn.addEventListener("click", () => {
-      gameView.classList.add("hidden");
+      hideAllSections();
       menu.classList.remove("hidden");
       frame.src = "";
     });
+
+    // Utility function to hide all sections
+    function hideAllSections() {
+      menu.classList.add("hidden");
+      gameView.classList.add("hidden");
+      contactSect.classList.add("hidden");
+      messagesView.classList.add("hidden");
+    }
+
+    // Contact page handlers
+    contactBtn.addEventListener("click", () => {
+      hideAllSections();
+      contactSect.classList.remove("hidden");
+    });
+    
+    backContact.addEventListener("click", () => {
+      hideAllSections();
+      menu.classList.remove("hidden");
+    });
+
+    // Messages page handlers
+    viewMessages.addEventListener("click", () => {
+      hideAllSections();
+      messagesView.classList.remove("hidden");
+      loadMessages();
+    });
+    
+    backFromMessages.addEventListener("click", () => {
+      hideAllSections();
+      contactSect.classList.remove("hidden");
+    });
+
+    // Message system functionality
+    function saveMessage(sender, message) {
+      const messages = getMessages();
+      const newMessage = {
+        id: Date.now(),
+        sender: sender,
+        content: message,
+        timestamp: new Date().toLocaleString('fr-FR')
+      };
+      messages.push(newMessage);
+      localStorage.setItem('clubMessages', JSON.stringify(messages));
+      return newMessage;
+    }
+
+    function getMessages() {
+      const stored = localStorage.getItem('clubMessages');
+      return stored ? JSON.parse(stored) : [];
+    }
+
+    function loadMessages() {
+      const messages = getMessages();
+      if (messages.length === 0) {
+        messagesList.innerHTML = '<div class="no-messages">Aucun message pour le moment.</div>';
+        return;
+      }
+      
+      messagesList.innerHTML = messages
+        .sort((a, b) => b.id - a.id) // Most recent first
+        .map(msg => `
+          <div class="message-item">
+            <div class="message-header">
+              <span class="message-sender">${escapeHtml(msg.sender)}</span>
+              <span class="message-time">${msg.timestamp}</span>
+            </div>
+            <div class="message-content">${escapeHtml(msg.content)}</div>
+          </div>
+        `).join('');
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function showMessageStatus(message, isSuccess = true) {
+      messageStatus.textContent = message;
+      messageStatus.className = isSuccess ? 'success' : 'error';
+      messageStatus.classList.remove('hidden');
+      
+      setTimeout(() => {
+        messageStatus.classList.add('hidden');
+      }, 3000);
+    }
+
+    // Contact form submission
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const senderName = document.getElementById('senderName').value.trim();
+      const messageText = document.getElementById('messageText').value.trim();
+      
+      if (!senderName || !messageText) {
+        showMessageStatus('Veuillez remplir tous les champs.', false);
+        return;
+      }
+      
+      try {
+        saveMessage(senderName, messageText);
+        contactForm.reset();
+        showMessageStatus('Message envoyé avec succès !', true);
+      } catch (error) {
+        console.error('Erreur lors de l\'envoi du message:', error);
+        showMessageStatus('Erreur lors de l\'envoi du message.', false);
+      }
+    });
+
+    // Clear all messages
+    clearMessages.addEventListener('click', () => {
+      if (confirm('Êtes-vous sûr de vouloir effacer tous les messages ?')) {
+        localStorage.removeItem('clubMessages');
+        loadMessages();
+      }
+    });
+
+    // Particle animation (unchanged)
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particles = [];
+    const particleCount = 180;
+
+    class Particle {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.size = Math.random() * 5 + 1;
+        this.speedX = (Math.random() * 2 - 1) * 0.5;
+        this.speedY = (Math.random() * 2 - 1) * 0.5;
+        this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+      }
+      draw() {
+        const gradient = ctx.createRadialGradient(this.x, this.y, this.size, this.x, this.y, this.size * 2);
+        gradient.addColorStop(0, this.color);
+        gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function init() {
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
+      }
+    }
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach((particle, index) => {
+        particle.update(); particle.draw();
+        for (let j = index + 1; j < particles.length; j++) {
+          const other = particles[j];
+          const dist = Math.hypot(particle.x - other.x, particle.y - other.y);
+          if (dist < 10000) {
+            ctx.strokeStyle = `rgba(255, 255, 255, ${1 - dist/150})`;
+            ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.moveTo(particle.x, particle.y);
+            ctx.lineTo(other.x, other.y); ctx.stroke();
+          }
+        }
+      });
+      requestAnimationFrame(animate);
+    }
+    window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+    init(); animate();
   </script>
 </body>
 </html>
